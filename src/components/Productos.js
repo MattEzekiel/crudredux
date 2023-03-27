@@ -1,8 +1,26 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 
 function Productos() {
     return (
-        <h1>Desde productos</h1>
+        <Fragment>
+            <h2 className={"text-center my-5"}>Listado de Productos</h2>
+            <table className={"table table-striped"}>
+                <thead className={"bg-primary table-dark"}>
+                    <tr>
+                        <th scope={"col"}>Nombre</th>
+                        <th scope={"col"}>Precio</th>
+                        <th scope={"col"}>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Prueba</td>
+                        <td>Prueba</td>
+                        <td>Prueba</td>
+                    </tr>
+                </tbody>
+            </table>
+        </Fragment>
     );
 }
 

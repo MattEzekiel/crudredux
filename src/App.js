@@ -1,21 +1,26 @@
 import React, {Fragment} from "react";
 import Header from "./components/Header";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Productos from "./components/Productos";
+import NuevoProducto from "./components/NuevoProducto";
+import EditarProducto from "./components/EditarProducto";
+// REDUX
+import { Provider } from 'react-redux';
+import store from "./store";
 
 function App() {
   return (
     <Fragment>
-      <Header />
-        <div className={"container"}>
-            <Routes>
-                <Route
-                    exact
-                    path={"/"}
-                    component={Productos}
-                />
-            </Routes>
-        </div>
+      <Provider store={store}>
+          <Header />
+          <div className={"container mt-5"}>
+              <Routes>
+                  <Route path={"/"} element={<Productos />} />
+                  <Route path={"/productos/nuevo"} element={<NuevoProducto />} />
+                  <Route path={"/productos/editar/:id"} element={<EditarProducto />} />
+              </Routes>
+          </div>
+      </Provider>
     </Fragment>
   );
 }
