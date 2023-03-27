@@ -12,8 +12,8 @@
     },
     {
       "id": 4,
-      "nombre": "Rib Eye 800g",
-      "precio": 200
+      "precio": "200",
+      "nombre": "no se que iba acá"
     },
     {
       "id": 5,

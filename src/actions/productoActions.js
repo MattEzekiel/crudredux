@@ -8,9 +8,14 @@ import {
     OBTENER_PRODUCTO_ELIMINAR,
     PRODUCTO_ELIMINADO_EXITO,
     PRODUCTO_ELIMINADO_ERROR,
+    OBTENER_PRODUCTO_EDITAR,
+    COMENZAR_EDICION_PRODUCTO,
+    PRODUCTO_EDITADO_EXITO,
+    PRODUCTO_EDITADO_ERROR,
 } from "../types";
 import clienteAxios from "../config/axios";
 import Swal from "sweetalert2";
+import producto from "../components/Producto";
 
 // Crear nuevos productos
 export function crearNuevoProductoAction(producto) {
@@ -107,9 +112,47 @@ const obtenerProductoEliminar = id => ({
 
 const eliminarProductoExito = () => ({
     type: PRODUCTO_ELIMINADO_EXITO,
-})
+});
 
 const eliminarProductoError = () => ({
     type: PRODUCTO_ELIMINADO_ERROR,
     payload: true,
-})
+});
+
+export function obtenerEditar(producto) {
+    return (dispatch) => {
+        dispatch(obtenerProductoEditarAction(producto));
+    }
+}
+
+const obtenerProductoEditarAction = producto => ({
+    type: OBTENER_PRODUCTO_EDITAR,
+    payload: producto,
+});
+
+export function editarProductoAction(producto) {
+    return async (dispatch) => {
+        dispatch(editarProducto());
+
+        try {
+            await clienteAxios.put(`/productos/${producto.id}`, producto);
+            dispatch(editarProductoExito(producto));
+        } catch(e) {
+            console.error(e);
+            dispatch(editarProductoError())
+        }
+    }
+}
+
+const editarProducto = () => ({
+    type: COMENZAR_EDICION_PRODUCTO
+});
+
+const editarProductoExito = producto => ({
+    type: PRODUCTO_EDITADO_EXITO,
+    payload: producto,
+});
+
+const editarProductoError = () => ({
+    type: PRODUCTO_EDITADO_ERROR,
+});

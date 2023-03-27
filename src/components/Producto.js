@@ -1,12 +1,13 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { borrarProductoAction } from "../actions/productoActions";
+import { borrarProductoAction, obtenerEditar } from "../actions/productoActions";
 import Swal from "sweetalert2";
 
 function Producto({producto}) {
     const { nombre, precio, id } = producto;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const confirmarEliminarProducto = id => {
         Swal.fire({
@@ -24,15 +25,21 @@ function Producto({producto}) {
         });
     }
 
+    const redireccionarEdicion = producto => {
+        dispatch(obtenerEditar(producto));
+        navigate(`productos/editar/${producto.id}`);
+    }
+
     return (
         <tr>
             <td>{nombre}</td>
             <td><span className={"font-weight-bold"}>$ {precio}</span></td>
             <td className={"acciones"}>
-                <Link
-                    to={`/productos/editar/${id}`}
+                <button
+                    type={"button"}
+                    onClick={() => redireccionarEdicion(producto)}
                     className={"btn btn-primary mr-3"}
-                >Editar</Link>
+                >Editar</button>
                 <button
                     type={"button"}
                     className={"btn btn-danger"}
