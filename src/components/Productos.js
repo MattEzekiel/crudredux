@@ -1,9 +1,27 @@
-import React, {Fragment} from 'react';
+import React, { Fragment, useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { obtenerProductosAction } from "../actions/productoActions";
+import Producto from "./Producto";
+import SinProductos from "./SinProductos";
 
 function Productos() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const cargarProductos = () => dispatch(obtenerProductosAction());
+        cargarProductos();
+    }, []);
+
+    const productos = useSelector(state => state.productos.productos);
+    const error = useSelector(state => state.productos.error);
+    const cargando = useSelector(state => state.productos.loading);
+
     return (
         <Fragment>
             <h2 className={"text-center my-5"}>Listado de Productos</h2>
+            { error && (
+                <p className={"font-weight-bold alert alert-danger text-center"}>Hubo un error</p>
+            ) }
             <table className={"table table-striped"}>
                 <thead className={"bg-primary table-dark"}>
                     <tr>
@@ -13,11 +31,16 @@ function Productos() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Prueba</td>
-                        <td>Prueba</td>
-                        <td>Prueba</td>
-                    </tr>
+                    { cargando && (
+                        <tr>
+                            <td className={"text-center"} colSpan={"100%"}>Cargando...</td>
+                        </tr>
+                    ) }
+                    { productos.length === 0 && !cargando ?
+                        <SinProductos />
+                        :
+                        productos.map(producto => <Producto producto={producto} key={producto.id}/>)
+                    }
                 </tbody>
             </table>
         </Fragment>
